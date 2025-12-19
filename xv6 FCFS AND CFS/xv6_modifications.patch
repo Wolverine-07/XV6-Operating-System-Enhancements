@@ -1,0 +1,1305 @@
+Binary files xv6-riscv/.git/index and xv6-riscv_1/.git/index differ
+diff -ruN xv6-riscv/.git/logs/HEAD xv6-riscv_1/.git/logs/HEAD
+--- xv6-riscv/.git/logs/HEAD	2025-09-12 15:57:21.247863695 +0530
++++ xv6-riscv_1/.git/logs/HEAD	2025-09-10 22:26:43.034586895 +0530
+@@ -1 +1 @@
+-0000000000000000000000000000000000000000 996f6ee34877db51c697479d97abdf127e09f5b4 Wolverine-07 <prashant.vinod@students.iiit.ac.in> 1757672841 +0530	clone: from https://github.com/mit-pdos/xv6-riscv.git
++0000000000000000000000000000000000000000 996f6ee34877db51c697479d97abdf127e09f5b4 Wolverine-07 <prashant.vinod@students.iiit.ac.in> 1757523403 +0530	clone: from https://github.com/mit-pdos/xv6-riscv.git
+diff -ruN xv6-riscv/.git/logs/refs/heads/riscv xv6-riscv_1/.git/logs/refs/heads/riscv
+--- xv6-riscv/.git/logs/refs/heads/riscv	2025-09-12 15:57:21.247863695 +0530
++++ xv6-riscv_1/.git/logs/refs/heads/riscv	2025-09-10 22:26:43.034586895 +0530
+@@ -1 +1 @@
+-0000000000000000000000000000000000000000 996f6ee34877db51c697479d97abdf127e09f5b4 Wolverine-07 <prashant.vinod@students.iiit.ac.in> 1757672841 +0530	clone: from https://github.com/mit-pdos/xv6-riscv.git
++0000000000000000000000000000000000000000 996f6ee34877db51c697479d97abdf127e09f5b4 Wolverine-07 <prashant.vinod@students.iiit.ac.in> 1757523403 +0530	clone: from https://github.com/mit-pdos/xv6-riscv.git
+diff -ruN xv6-riscv/.git/logs/refs/remotes/origin/HEAD xv6-riscv_1/.git/logs/refs/remotes/origin/HEAD
+--- xv6-riscv/.git/logs/refs/remotes/origin/HEAD	2025-09-12 15:57:21.247329218 +0530
++++ xv6-riscv_1/.git/logs/refs/remotes/origin/HEAD	2025-09-10 22:26:43.034014943 +0530
+@@ -1 +1 @@
+-0000000000000000000000000000000000000000 996f6ee34877db51c697479d97abdf127e09f5b4 Wolverine-07 <prashant.vinod@students.iiit.ac.in> 1757672841 +0530	clone: from https://github.com/mit-pdos/xv6-riscv.git
++0000000000000000000000000000000000000000 996f6ee34877db51c697479d97abdf127e09f5b4 Wolverine-07 <prashant.vinod@students.iiit.ac.in> 1757523403 +0530	clone: from https://github.com/mit-pdos/xv6-riscv.git
+Binary files xv6-riscv/.git/objects/pack/pack-66669d2ef1caf96894aac95717481e0b77129b66.idx and xv6-riscv_1/.git/objects/pack/pack-66669d2ef1caf96894aac95717481e0b77129b66.idx differ
+Binary files xv6-riscv/.git/objects/pack/pack-66669d2ef1caf96894aac95717481e0b77129b66.pack and xv6-riscv_1/.git/objects/pack/pack-66669d2ef1caf96894aac95717481e0b77129b66.pack differ
+Binary files xv6-riscv/.git/objects/pack/pack-66669d2ef1caf96894aac95717481e0b77129b66.rev and xv6-riscv_1/.git/objects/pack/pack-66669d2ef1caf96894aac95717481e0b77129b66.rev differ
+Binary files xv6-riscv/.git/objects/pack/pack-b6de136075a1c9c8dc06ea03fbbbe973688dd232.idx and xv6-riscv_1/.git/objects/pack/pack-b6de136075a1c9c8dc06ea03fbbbe973688dd232.idx differ
+Binary files xv6-riscv/.git/objects/pack/pack-b6de136075a1c9c8dc06ea03fbbbe973688dd232.pack and xv6-riscv_1/.git/objects/pack/pack-b6de136075a1c9c8dc06ea03fbbbe973688dd232.pack differ
+Binary files xv6-riscv/.git/objects/pack/pack-b6de136075a1c9c8dc06ea03fbbbe973688dd232.rev and xv6-riscv_1/.git/objects/pack/pack-b6de136075a1c9c8dc06ea03fbbbe973688dd232.rev differ
+diff -ruN xv6-riscv/kernel/console.c xv6-riscv_1/kernel/console.c
+--- xv6-riscv/kernel/console.c	2025-09-12 15:57:21.249987592 +0530
++++ xv6-riscv_1/kernel/console.c	2025-09-10 23:25:36.476113854 +0530
+@@ -142,7 +142,7 @@
+   acquire(&cons.lock);
+ 
+   switch(c){
+-  case C('P'):  // Print process list.
++  case C('Y'):  // Print process list.
+     procdump();
+     break;
+   case C('U'):  // Kill line.
+diff -ruN xv6-riscv/kernel/defs.h xv6-riscv_1/kernel/defs.h
+--- xv6-riscv/kernel/defs.h	2025-09-12 15:57:21.249987592 +0530
++++ xv6-riscv_1/kernel/defs.h	2025-09-12 15:02:49.922005422 +0530
+@@ -33,6 +33,7 @@
+ int             fileread(struct file*, uint64, int n);
+ int             filestat(struct file*, uint64 addr);
+ int             filewrite(struct file*, uint64, int n);
++void            update_read_count(int);
+ 
+ // fs.c
+ void            fsinit(int);
+@@ -101,6 +102,9 @@
+ int             either_copyout(int user_dst, uint64 dst, void *src, uint64 len);
+ int             either_copyin(void *dst, int user_src, uint64 src, uint64 len);
+ void            procdump(void);
++uint64          calculate_weight(int nice);
++void            update_vruntime(struct proc *p, uint64 ticks);
++uint64          calculate_time_slice(struct proc*);
+ 
+ // swtch.S
+ void            swtch(struct context*, struct context*);
+diff -ruN xv6-riscv/kernel/file.c xv6-riscv_1/kernel/file.c
+--- xv6-riscv/kernel/file.c	2025-09-12 15:57:21.249987592 +0530
++++ xv6-riscv_1/kernel/file.c	2025-09-10 22:52:27.085964198 +0530
+@@ -126,6 +126,11 @@
+     panic("fileread");
+   }
+ 
++  // Update the global read counter if bytes were successfully read
++  if(r > 0) {
++    update_read_count(r);
++  }
++
+   return r;
+ }
+ 
+diff -ruN xv6-riscv/kernel/main.c xv6-riscv_1/kernel/main.c
+--- xv6-riscv/kernel/main.c	2025-09-12 15:57:21.250846699 +0530
++++ xv6-riscv_1/kernel/main.c	2025-09-10 22:52:27.085964198 +0530
+@@ -4,6 +4,8 @@
+ #include "riscv.h"
+ #include "defs.h"
+ 
++extern struct spinlock readcount_lock;
++
+ volatile static int started = 0;
+ 
+ // start() jumps here in supervisor mode on all CPUs.
+@@ -27,6 +29,7 @@
+     binit();         // buffer cache
+     iinit();         // inode table
+     fileinit();      // file table
++    initlock(&readcount_lock, "readcount"); // initialize readcount lock
+     virtio_disk_init(); // emulated hard disk
+     userinit();      // first user process
+     __sync_synchronize();
+diff -ruN xv6-riscv/kernel/proc.c xv6-riscv_1/kernel/proc.c
+--- xv6-riscv/kernel/proc.c	2025-09-12 15:57:21.250846699 +0530
++++ xv6-riscv_1/kernel/proc.c	2025-09-12 15:52:30.907836762 +0530
+@@ -146,6 +146,37 @@
+   p->context.ra = (uint64)forkret;
+   p->context.sp = p->kstack + PGSIZE;
+ 
++  // Initialize scheduler fields
++  p->ctime = ticks;
++  p->nice = 0;
++  p->weight = calculate_weight(0);
++  p->time_slice = 0;
++  p->ticks_run = 0;
++  
++  // Initialize vruntime to minimum of existing processes to prevent starving them
++#ifdef CFS
++  uint64 min_vruntime = 0;
++  struct proc *pr;
++  int found_runnable = 0;
++  for(pr = proc; pr < &proc[NPROC]; pr++) {
++    if(pr != p && (pr->state == RUNNABLE || pr->state == RUNNING)) {
++      if(!found_runnable || pr->vruntime < min_vruntime) {
++        min_vruntime = pr->vruntime;
++        found_runnable = 1;
++      }
++    }
++  }
++  p->vruntime = found_runnable ? min_vruntime : 0;
++#else
++  p->vruntime = 0;
++#endif
++  
++  // Initialize MLFQ fields
++  p->queue_level = 0;          // Start in highest priority queue
++  p->queue_ticks = 0;
++  p->enter_time = ticks;
++  p->last_run = 0;
++
+   return p;
+ }
+ 
+@@ -435,23 +466,187 @@
+     intr_off();
+ 
+     int found = 0;
++    
++#ifdef MLFQ
++    // Multi-Level Feedback Queue Scheduler
++    // Check for starvation prevention every 48 ticks
++    static uint64 last_boost = 0;
++    if(ticks - last_boost >= 48) {
++      // Move all processes to queue 0 to prevent starvation
++      for(p = proc; p < &proc[NPROC]; p++) {
++        acquire(&p->lock);
++        if(p->state != UNUSED) {
++          p->queue_level = 0;
++          p->queue_ticks = 0;
++          p->enter_time = ticks;
++        }
++        release(&p->lock);
++      }
++      last_boost = ticks;
++      printf("[MLFQ] Priority boost - all processes moved to queue 0\n");
++    }
++    
++    // Find highest priority queue with runnable processes
++    struct proc *chosen = 0;
++    for(int queue = 0; queue < 4; queue++) {
++      for(p = proc; p < &proc[NPROC]; p++) {
++        acquire(&p->lock);
++        if(p->state == RUNNABLE && p->queue_level == queue) {
++          if(chosen == 0) {
++            chosen = p;
++          } else {
++            // Round-robin within the same queue level
++            release(&p->lock);
++          }
++        } else {
++          release(&p->lock);
++        }
++      }
++      if(chosen != 0) break; // Found process in this queue level
++    }
++    
++    if(chosen != 0) {
++      // Calculate time slice based on queue level
++      uint64 time_slices[] = {1, 4, 8, 16}; // Queue 0->1, 1->4, 2->8, 3->16 ticks
++      chosen->time_slice = time_slices[chosen->queue_level];
++      chosen->ticks_run = 0;
++      chosen->last_run = ticks;
++      
++      printf("[MLFQ] Scheduling PID %d from queue %d (time_slice: %ld)\n", 
++             chosen->pid, chosen->queue_level, chosen->time_slice);
++      
++      // Switch to chosen process
++      chosen->state = RUNNING;
++      c->proc = chosen;
++      swtch(&c->context, &chosen->context);
++      c->proc = 0;
++      found = 1;
++      release(&chosen->lock);
++    }
++    
++#elif defined(FCFS)
++    // First Come First Serve Scheduler
++    struct proc *earliest = 0;
+     for(p = proc; p < &proc[NPROC]; p++) {
+       acquire(&p->lock);
+       if(p->state == RUNNABLE) {
+-        // Switch to chosen process.  It is the process's job
+-        // to release its lock and then reacquire it
+-        // before jumping back to us.
++        if(earliest == 0 || p->ctime < earliest->ctime) {
++          if(earliest != 0)
++            release(&earliest->lock);
++          earliest = p;
++        } else {
++          release(&p->lock);
++        }
++      } else {
++        release(&p->lock);
++      }
++    }
++    
++    if(earliest != 0) {
++      // Switch to chosen process.
++      earliest->state = RUNNING;
++      c->proc = earliest;
++      swtch(&c->context, &earliest->context);
++      c->proc = 0;
++      found = 1;
++      release(&earliest->lock);
++    }
++    
++#elif defined(CFS)
++    // Completely Fair Scheduler
++    // First pass: Count runnable processes and calculate total weight
++    int runnable_count = 0;
++    uint64 total_weight = 0;
++    for(p = proc; p < &proc[NPROC]; p++) {
++      acquire(&p->lock);
++      if(p->state == RUNNABLE) {
++        runnable_count++;
++        total_weight += p->weight;
++      }
++      release(&p->lock);
++    }
++    
++    // Second pass: Calculate time slices for all runnable processes
++    if(runnable_count > 0 && total_weight > 0) {
++      for(p = proc; p < &proc[NPROC]; p++) {
++        acquire(&p->lock);
++        if(p->state == RUNNABLE) {
++          // Calculate time slice based on weight proportion
++          uint64 time_slice = (48 * p->weight) / total_weight;  // 48 tick target latency
++          if(time_slice < 3) time_slice = 3;  // Minimum 3 ticks
++          if(time_slice > 24) time_slice = 24;  // Maximum 24 ticks
++          p->time_slice = time_slice;
++        }
++        release(&p->lock);
++      }
++    }
++    
++    // Only log when there are runnable processes
++    if(runnable_count > 0) {
++      printf("[Scheduler Tick]\n");
++      
++      // Third pass: Log all runnable processes and their stats
++      for(p = proc; p < &proc[NPROC]; p++) {
++        acquire(&p->lock);
++        if(p->state == RUNNABLE) {
++          printf("PID: %d | vRuntime: %ld | Weight: %ld | TimeSlice: %ld\n", 
++                 p->pid, p->vruntime, p->weight, p->time_slice);
++        }
++        release(&p->lock);
++      }
++    }
++    
++    // Fourth pass: Find process with minimum vruntime
++    struct proc *min_vruntime_proc = 0;
++    for(p = proc; p < &proc[NPROC]; p++) {
++      acquire(&p->lock);
++      if(p->state == RUNNABLE) {
++        if(min_vruntime_proc == 0 || p->vruntime < min_vruntime_proc->vruntime) {
++          if(min_vruntime_proc != 0)
++            release(&min_vruntime_proc->lock);
++          min_vruntime_proc = p;
++        } else {
++          release(&p->lock);
++        }
++      } else {
++        release(&p->lock);
++      }
++    }
++    
++    if(min_vruntime_proc != 0) {
++      if(runnable_count > 0) {
++        printf("--> Scheduling PID %d (lowest vRuntime: %ld)\n", 
++               min_vruntime_proc->pid, min_vruntime_proc->vruntime);
++      }
++      
++      // Reset ticks run for the new time slice
++      min_vruntime_proc->ticks_run = 0;
++      
++      // Switch to chosen process.
++      min_vruntime_proc->state = RUNNING;
++      c->proc = min_vruntime_proc;
++      swtch(&c->context, &min_vruntime_proc->context);
++      c->proc = 0;
++      found = 1;
++      release(&min_vruntime_proc->lock);
++    }
++    
++#else
++    // Default Round Robin Scheduler
++    for(p = proc; p < &proc[NPROC]; p++) {
++      acquire(&p->lock);
++      if(p->state == RUNNABLE) {
++        // Switch to chosen process.
+         p->state = RUNNING;
+         c->proc = p;
+         swtch(&c->context, &p->context);
+-
+-        // Process is done running for now.
+-        // It should have changed its p->state before coming back.
+         c->proc = 0;
+         found = 1;
+       }
+       release(&p->lock);
+     }
++#endif
++
+     if(found == 0) {
+       // nothing to run; stop running on this core until an interrupt.
+       asm volatile("wfi");
+@@ -492,6 +687,20 @@
+ {
+   struct proc *p = myproc();
+   acquire(&p->lock);
++  
++#ifdef MLFQ
++  // For MLFQ, check if this is a voluntary yield (I/O bound)
++  // If process didn't use full time slice, keep it in same queue
++  if(p->ticks_run < p->time_slice) {
++    printf("[MLFQ] PID %d voluntary yield - staying in queue %d\n", 
++           p->pid, p->queue_level);
++    // Reset ticks but stay in same queue
++    p->queue_ticks = 0;
++    p->enter_time = ticks;
++  }
++  // If full time slice was used, demotion already handled in timer interrupt
++#endif
++  
+   p->state = RUNNABLE;
+   sched();
+   release(&p->lock);
+@@ -674,6 +883,16 @@
+   char *state;
+ 
+   printf("\n");
++#ifdef MLFQ
++  printf("PID\tSTATE\tNAME\tQUEUE\tTSLICE\tQTICKS\n");
++#elif defined(FCFS)
++  printf("PID\tSTATE\tNAME\tCTIME\n");
++#elif defined(CFS)
++  printf("PID\tSTATE\tNAME\tVRUNTIME\tNICE\tWEIGHT\tTSLICE\n");
++#else
++  printf("PID\tSTATE\tNAME\n");
++#endif
++  
+   for(p = proc; p < &proc[NPROC]; p++){
+     if(p->state == UNUSED)
+       continue;
+@@ -681,7 +900,75 @@
+       state = states[p->state];
+     else
+       state = "???";
+-    printf("%d %s %s", p->pid, state, p->name);
+-    printf("\n");
++      
++#ifdef MLFQ
++    printf("%d\t%s\t%s\t%d\t%ld\t%ld\n", p->pid, state, p->name, 
++           p->queue_level, p->time_slice, p->queue_ticks);
++#elif defined(FCFS)
++    printf("%d\t%s\t%s\t%ld\n", p->pid, state, p->name, p->ctime);
++#elif defined(CFS)
++    printf("%d\t%s\t%s\t%ld\t%d\t%ld\t%ld\n", p->pid, state, p->name, 
++           p->vruntime, p->nice, p->weight, p->time_slice);
++#else
++    printf("%d\t%s\t%s\n", p->pid, state, p->name);
++#endif
+   }
+ }
++
++// Calculate weight based on nice value using lookup table
++// Based on Linux CFS weight table
++uint64
++calculate_weight(int nice)
++{
++  // Weight table for nice values from -20 to 19
++  // Each step is approximately 1.25x the previous
++  static uint64 weight_table[40] = {
++    /* -20 */ 88761, 71755, 56483, 46273, 36291, 29154, 23254, 18705, 14949, 11916,
++    /* -10 */ 9548, 7620, 6100, 4904, 3906, 3121, 2501, 1991, 1586, 1277,
++    /*   0 */ 1024, 820, 655, 526, 423, 335, 272, 215, 172, 137,
++    /*  10 */ 110, 87, 70, 56, 45, 36, 29, 23, 18, 15
++    /*  19 */
++  };
++  
++  // Clamp nice value to valid range
++  if(nice < -20) nice = -20;
++  if(nice > 19) nice = 19;
++  
++  return weight_table[nice + 20];
++}
++
++// Update virtual runtime for CFS
++void
++update_vruntime(struct proc *p, uint64 ticks)
++{
++  // vruntime += (ticks * 1024) / weight
++  p->vruntime += (ticks * 1024) / p->weight;
++}
++
++// Calculate time slice for CFS based on weight
++uint64
++calculate_time_slice(struct proc *p)
++{
++  uint64 total_weight = 0;
++  int runnable_count = 0;
++  struct proc *pr;
++  
++  // Calculate total weight of runnable processes
++  for(pr = proc; pr < &proc[NPROC]; pr++) {
++    if(pr->state == RUNNABLE || (pr->state == RUNNING && pr == p)) {
++      total_weight += pr->weight;
++      runnable_count++;
++    }
++  }
++  
++  if(total_weight == 0 || runnable_count == 0) return 6; // Minimum slice
++  
++  // Target latency of 48 ticks distributed by weight
++  uint64 time_slice = (48 * p->weight) / total_weight;
++  
++  // Minimum time slice of 3 ticks, maximum of 24 ticks
++  if(time_slice < 3) time_slice = 3;
++  if(time_slice > 24) time_slice = 24;
++  
++  return time_slice;
++}
+diff -ruN xv6-riscv/kernel/proc.h xv6-riscv_1/kernel/proc.h
+--- xv6-riscv/kernel/proc.h	2025-09-12 15:57:21.250846699 +0530
++++ xv6-riscv_1/kernel/proc.h	2025-09-12 13:41:44.639293816 +0530
+@@ -104,4 +104,18 @@
+   struct file *ofile[NOFILE];  // Open files
+   struct inode *cwd;           // Current directory
+   char name[16];               // Process name (debugging)
++  
++  // Scheduler-specific fields
++  uint64 ctime;                // Process creation time
++  uint64 vruntime;             // Virtual runtime for CFS
++  int nice;                    // Nice value (-20 to 19)
++  uint64 weight;               // Scheduling weight
++  uint64 time_slice;           // Time slice for current run
++  uint64 ticks_run;            // Ticks run in current slice
++  
++  // MLFQ-specific fields
++  int queue_level;             // Current queue level (0-3)
++  uint64 queue_ticks;          // Ticks used in current queue level
++  uint64 enter_time;           // Time when entered current queue
++  uint64 last_run;             // Last time process was scheduled
+ };
+diff -ruN xv6-riscv/kernel/syscall.c xv6-riscv_1/kernel/syscall.c
+--- xv6-riscv/kernel/syscall.c	2025-09-12 15:57:21.251542705 +0530
++++ xv6-riscv_1/kernel/syscall.c	2025-09-12 14:11:25.455130258 +0530
+@@ -101,6 +101,8 @@
+ extern uint64 sys_link(void);
+ extern uint64 sys_mkdir(void);
+ extern uint64 sys_close(void);
++extern uint64 sys_getreadcount(void);
++extern uint64 sys_nice(void);
+ 
+ // An array mapping syscall numbers from syscall.h
+ // to the function that handles the system call.
+@@ -126,6 +128,8 @@
+ [SYS_link]    sys_link,
+ [SYS_mkdir]   sys_mkdir,
+ [SYS_close]   sys_close,
++[SYS_getreadcount] sys_getreadcount,
++[SYS_nice]    sys_nice,
+ };
+ 
+ void
+diff -ruN xv6-riscv/kernel/syscall.h xv6-riscv_1/kernel/syscall.h
+--- xv6-riscv/kernel/syscall.h	2025-09-12 15:57:21.251542705 +0530
++++ xv6-riscv_1/kernel/syscall.h	2025-09-12 14:11:25.455130258 +0530
+@@ -20,3 +20,5 @@
+ #define SYS_link   19
+ #define SYS_mkdir  20
+ #define SYS_close  21
++#define SYS_getreadcount 22
++#define SYS_nice   23
+diff -ruN xv6-riscv/kernel/sysproc.c xv6-riscv_1/kernel/sysproc.c
+--- xv6-riscv/kernel/sysproc.c	2025-09-12 15:57:21.251542705 +0530
++++ xv6-riscv_1/kernel/sysproc.c	2025-09-12 14:11:25.455130258 +0530
+@@ -7,6 +7,10 @@
+ #include "proc.h"
+ #include "vm.h"
+ 
++// Global variable to track total bytes read
++uint64 total_bytes_read = 0;
++struct spinlock readcount_lock;
++
+ uint64
+ sys_exit(void)
+ {
+@@ -105,3 +109,42 @@
+   release(&tickslock);
+   return xticks;
+ }
++
++uint64
++sys_getreadcount(void)
++{
++  uint64 count;
++  acquire(&readcount_lock);
++  count = total_bytes_read;
++  release(&readcount_lock);
++  return count;
++}
++
++void
++update_read_count(int bytes)
++{
++  acquire(&readcount_lock);
++  total_bytes_read += bytes;
++  release(&readcount_lock);
++}
++
++uint64
++sys_nice(void)
++{
++  int nice_value;
++  struct proc *p = myproc();
++  
++  argint(0, &nice_value);
++  
++  // Clamp nice value to valid range [-20, 19]
++  if(nice_value < -20) nice_value = -20;
++  if(nice_value > 19) nice_value = 19;
++  
++  // Update the process's nice value and recalculate weight
++  acquire(&p->lock);
++  p->nice = nice_value;
++  p->weight = calculate_weight(nice_value);
++  release(&p->lock);
++  
++  return 0;
++}
+diff -ruN xv6-riscv/kernel/trap.c xv6-riscv_1/kernel/trap.c
+--- xv6-riscv/kernel/trap.c	2025-09-12 15:57:21.251542705 +0530
++++ xv6-riscv_1/kernel/trap.c	2025-09-12 14:11:25.454884967 +0530
+@@ -81,8 +81,41 @@
+     kexit(-1);
+ 
+   // give up the CPU if this is a timer interrupt.
+-  if(which_dev == 2)
++  if(which_dev == 2) {
++#ifdef MLFQ
++    // Multi-Level Feedback Queue timer handling
++    if(p && p->state == RUNNING) {
++      p->ticks_run++;
++      p->queue_ticks++;
++      
++      // Check if time slice is exhausted
++      if(p->ticks_run >= p->time_slice) {
++        // Time slice used up - demote to lower queue (unless already at lowest)
++        if(p->queue_level < 3) {
++          p->queue_level++;
++          printf("[MLFQ] PID %d demoted to queue %d (time slice exhausted)\n", 
++                 p->pid, p->queue_level);
++        }
++        p->queue_ticks = 0;
++        p->enter_time = ticks;
++        yield();
++      }
++    }
++#elif defined(CFS)
++    // Update virtual runtime and check time slice
++    if(p && p->state == RUNNING) {
++      update_vruntime(p, 1);
++      p->ticks_run++;
++      
++      // Yield if time slice is exhausted for time sharing 
++      if(p->ticks_run >= p->time_slice) {
++        yield();
++      }
++    }
++#else
+     yield();
++#endif
++  }
+ 
+   prepare_return();
+ 
+@@ -152,8 +185,41 @@
+   }
+ 
+   // give up the CPU if this is a timer interrupt.
+-  if(which_dev == 2 && myproc() != 0)
++  if(which_dev == 2 && myproc() != 0) {
++#ifdef MLFQ
++    struct proc *p = myproc();
++    if(p && p->state == RUNNING) {
++      p->ticks_run++;
++      p->queue_ticks++;
++      
++      // Check if time slice is exhausted
++      if(p->ticks_run >= p->time_slice) {
++        // Time slice used up - demote to lower queue (unless already at lowest)
++        if(p->queue_level < 3) {
++          p->queue_level++;
++          printf("[MLFQ] PID %d demoted to queue %d (time slice exhausted)\n", 
++                 p->pid, p->queue_level);
++        }
++        p->queue_ticks = 0;
++        p->enter_time = ticks;
++        yield();
++      }
++    }
++#elif defined(CFS)
++    struct proc *p = myproc();
++    if(p && p->state == RUNNING) {
++      update_vruntime(p, 1);
++      p->ticks_run++;
++      
++      // Yield if time slice is exhausted or force yield for time sharing
++      if(p->ticks_run >= p->time_slice || p->time_slice == 0) {
++        yield();
++      }
++    }
++#else
+     yield();
++#endif
++  }
+ 
+   // the yield() may have caused some traps to occur,
+   // so restore trap registers for use by kernelvec.S's sepc instruction.
+diff -ruN xv6-riscv/Makefile xv6-riscv_1/Makefile
+--- xv6-riscv/Makefile	2025-09-12 15:57:21.248807842 +0530
++++ xv6-riscv_1/Makefile	2025-09-12 15:06:04.819412897 +0530
+@@ -1,6 +1,22 @@
+ K=kernel
+ U=user
+ 
++# Try to infer the correct TOOLPREFIX if not set
++ifndef TOOLPREFIX
++TOOLPREFIX := $(shell if riscv64-unknown-elf-objdump -i 2>&1 | grep 'elf64-big' >/dev/null 2>&1; \
++	then echo 'riscv64-unknown-elf-'; \
++	elif riscv64-elf-objdump -i 2>&1 | grep 'elf64-big' >/dev/null 2>&1; \
++	then echo 'riscv64-elf-'; \
++	elif riscv64-linux-gnu-objdump -i 2>&1 | grep 'elf64-big' >/dev/null 2>&1; \
++	then echo 'riscv64-linux-gnu-'; \
++	elif riscv64-unknown-linux-gnu-objdump -i 2>&1 | grep 'elf64-big' >/dev/null 2>&1; \
++	then echo 'riscv64-unknown-linux-gnu-'; \
++	else echo "***" 1>&2; \
++	echo "*** Error: Couldn't find a riscv64 version of GCC/binutils." 1>&2; \
++	echo "*** To turn off this error, run 'gmake TOOLPREFIX= ...'." 1>&2; \
++	echo "***" 1>&2; exit 1; fi)
++endif
++
+ OBJS = \
+   $K/entry.o \
+   $K/start.o \
+@@ -34,22 +50,6 @@
+ # perhaps in /opt/riscv/bin
+ #TOOLPREFIX = 
+ 
+-# Try to infer the correct TOOLPREFIX if not set
+-ifndef TOOLPREFIX
+-TOOLPREFIX := $(shell if riscv64-unknown-elf-objdump -i 2>&1 | grep 'elf64-big' >/dev/null 2>&1; \
+-	then echo 'riscv64-unknown-elf-'; \
+-	elif riscv64-elf-objdump -i 2>&1 | grep 'elf64-big' >/dev/null 2>&1; \
+-	then echo 'riscv64-elf-'; \
+-	elif riscv64-linux-gnu-objdump -i 2>&1 | grep 'elf64-big' >/dev/null 2>&1; \
+-	then echo 'riscv64-linux-gnu-'; \
+-	elif riscv64-unknown-linux-gnu-objdump -i 2>&1 | grep 'elf64-big' >/dev/null 2>&1; \
+-	then echo 'riscv64-unknown-linux-gnu-'; \
+-	else echo "***" 1>&2; \
+-	echo "*** Error: Couldn't find a riscv64 version of GCC/binutils." 1>&2; \
+-	echo "*** To turn off this error, run 'gmake TOOLPREFIX= ...'." 1>&2; \
+-	echo "***" 1>&2; exit 1; fi)
+-endif
+-
+ QEMU = qemu-system-riscv64
+ MIN_QEMU_VERSION = 7.2
+ 
+@@ -73,6 +73,19 @@
+ CFLAGS += -I.
+ CFLAGS += $(shell $(CC) -fno-stack-protector -E -x c /dev/null >/dev/null 2>&1 && echo -fno-stack-protector)
+ 
++# Add scheduler flag support
++ifdef SCHEDULER
++CFLAGS += -D$(SCHEDULER)
++endif
++
++# defining the SCHEDULER macro
++ifeq ($(SCHEDULER), FCFS)
++CFLAGS += -DSCHED_FCFS
++endif
++ifeq ($(SCHEDULER), CFS)
++CFLAGS += -DSCHED_CFS
++endif
++
+ # Disable PIE when possible (for Ubuntu 16.10 toolchain)
+ ifneq ($(shell $(CC) -dumpspecs 2>/dev/null | grep -e '[^f]no-pie'),)
+ CFLAGS += -fno-pie -no-pie
+@@ -142,6 +155,16 @@
+ 	$U/_logstress\
+ 	$U/_forphan\
+ 	$U/_dorphan\
++	$U/_readcount\
++	$U/_cputest\
++	$U/_schedtest\
++	$U/_test_b1\
++	$U/_test_b2\
++	$U/_test_b3\
++	$U/_test_b4\
++	$U/_procdump_test\
++	$U/_mlfqtest\
++	$U/_nice_test\
+ 
+ fs.img: mkfs/mkfs README $(UPROGS)
+ 	mkfs/mkfs fs.img README $(UPROGS)
+Binary files xv6-riscv/user/_cfs_comprehensive_test and xv6-riscv_1/user/_cfs_comprehensive_test differ
+diff -ruN xv6-riscv/user/cputest.c xv6-riscv_1/user/cputest.c
+--- xv6-riscv/user/cputest.c	1970-01-01 05:30:00.000000000 +0530
++++ xv6-riscv_1/user/cputest.c	2025-09-10 23:02:59.385990495 +0530
+@@ -0,0 +1,30 @@
++#include "kernel/types.h"
++#include "kernel/stat.h"
++#include "user/user.h"
++
++int
++main(int argc, char *argv[])
++{
++  int id = 0;
++  if(argc > 1) {
++    id = atoi(argv[1]);
++  }
++  
++  int pid = getpid();
++  printf("CPU test process %d (PID: %d) starting\n", id, pid);
++  
++  // CPU intensive loop
++  for(int i = 0; i < 1000000; i++) {
++    if(i % 100000 == 0) {
++      printf("Process %d: iteration %d\n", id, i);
++    }
++    // Simulate some work
++    for(int j = 0; j < 100; j++) {
++      int dummy = j * j;
++      (void)dummy; // Prevent optimization
++    }
++  }
++  
++  printf("CPU test process %d (PID: %d) finished\n", id, pid);
++  exit(0);
++}
+diff -ruN xv6-riscv/user/mlfqtest.c xv6-riscv_1/user/mlfqtest.c
+--- xv6-riscv/user/mlfqtest.c	1970-01-01 05:30:00.000000000 +0530
++++ xv6-riscv_1/user/mlfqtest.c	2025-09-11 00:11:39.862953827 +0530
+@@ -0,0 +1,70 @@
++#include "kernel/types.h"
++#include "kernel/stat.h"
++#include "user/user.h"
++
++// Test Multi-Level Feedback Queue Scheduler
++int
++main(int argc, char *argv[])
++{
++  printf("MLFQ Test: Creating multiple processes with different behaviors\n\n");
++  
++  int pid1, pid2, pid3;
++  
++  // CPU-intensive process (should be demoted quickly)
++  if((pid1 = fork()) == 0) {
++    printf("Process 1 (PID %d): CPU-intensive task starting\n", getpid());
++    for(int i = 0; i < 100000; i++) {
++      // CPU-bound work
++      for(int j = 0; j < 1000; j++) {
++        // Busy loop
++      }
++      if(i % 10000 == 0) {
++        printf("Process 1: iteration %d\n", i);
++      }
++    }
++    printf("Process 1: CPU-intensive task completed\n");
++    exit(0);
++  }
++  
++  // I/O bound process (should stay in higher queues)
++  if((pid2 = fork()) == 0) {
++    printf("Process 2 (PID %d): I/O-bound task starting\n", getpid());
++    for(int i = 0; i < 20; i++) {
++      printf("Process 2: I/O operation %d\n", i);
++      // Simulate I/O wait with pause
++      pause(1);
++    }
++    printf("Process 2: I/O-bound task completed\n");
++    exit(0);
++  }
++  
++  // Mixed workload process
++  if((pid3 = fork()) == 0) {
++    printf("Process 3 (PID %d): Mixed workload starting\n", getpid());
++    for(int i = 0; i < 10; i++) {
++      // Some CPU work
++      for(int j = 0; j < 5000; j++) {
++        // Busy loop
++      }
++      printf("Process 3: mixed iteration %d\n", i);
++      if(i % 3 == 0) {
++        // Simulate occasional I/O wait with pause
++        pause(1);
++      }
++    }
++    printf("Process 3: Mixed workload completed\n");
++    exit(0);
++  }
++  
++  // Parent process waits and monitors
++  printf("Parent: All processes started\n");
++  printf("Parent: Use Ctrl+Y to see process queue information\n");
++  
++  // Wait for children
++  wait(0);
++  wait(0);
++  wait(0);
++  
++  printf("MLFQ Test completed\n");
++  exit(0);
++}
+diff -ruN xv6-riscv/user/nice_test.c xv6-riscv_1/user/nice_test.c
+--- xv6-riscv/user/nice_test.c	1970-01-01 05:30:00.000000000 +0530
++++ xv6-riscv_1/user/nice_test.c	2025-09-12 15:52:30.908701824 +0530
+@@ -0,0 +1,103 @@
++#include "kernel/types.h"
++#include "kernel/stat.h"
++#include "user/user.h"
++
++// Test nice system call and weight-based vruntime progression
++int
++main(int argc, char *argv[])
++{
++  printf("=== Testing Nice System Call and CFS Weight Influence ===\n");
++  
++  // Test different nice values
++  int pids[3];
++  
++  printf("=== Starting process creation ===\n");
++  
++  // Create high priority process (nice = -10)
++  if((pids[0] = fork()) == 0) {
++    printf("[Starting] High Priority Process - PID %d\n", getpid());
++    nice(-10);  // High priority, should get more CPU time
++    printf("[High Priority] PID %d: Set nice to -10 (weight should be ~9548)\n", getpid());
++    
++    // Do some CPU work and track progress
++    int count = 0;
++    for(int i = 0; i < 30000; i++) {
++      if(i % 6000 == 0) {
++        count++;
++        printf("[High Priority] PID %d: Work iteration %d\n", getpid(), count);
++      }
++      // Some computation
++      volatile int dummy = i * i % 1000;
++      (void)dummy; // Suppress unused variable warning
++    }
++    printf("[High Priority] PID %d: Completed all work\n", getpid());
++    exit(0);
++  }
++  
++  // Create normal priority process (nice = 0)
++  if((pids[1] = fork()) == 0) {
++    printf("[Starting] Normal Priority Process - PID %d\n", getpid());
++    nice(0);  // Normal priority, default weight
++    printf("[Normal Priority] PID %d: Set nice to 0 (weight should be 1024)\n", getpid());
++    
++    // Do some CPU work and track progress
++    int count = 0;
++    for(int i = 0; i < 30000; i++) {
++      if(i % 6000 == 0) {
++        count++;
++        printf("[Normal Priority] PID %d: Work iteration %d\n", getpid(), count);
++      }
++      // Some computation
++      volatile int dummy = i * i % 1000;
++      (void)dummy; // Suppress unused variable warning
++    }
++    printf("[Normal Priority] PID %d: Completed all work\n", getpid());
++    exit(0);
++  }
++  
++  // Create low priority process (nice = 10)
++  if((pids[2] = fork()) == 0) {
++    printf("[Starting] Low Priority Process - PID %d\n", getpid());
++    nice(10);  // Low priority, should get less CPU time
++    printf("[Low Priority] PID %d: Set nice to 10 (weight should be ~110)\n", getpid());
++    
++    // Do some CPU work and track progress
++    int count = 0;
++    for(int i = 0; i < 30000; i++) {
++      if(i % 6000 == 0) {
++        count++;
++        printf("[Low Priority] PID %d: Work iteration %d\n", getpid(), count);
++      }
++      // Some computation
++      volatile int dummy = i * i % 1000;
++      (void)dummy; // Suppress unused variable warning
++    }
++    printf("[Low Priority] PID %d: Completed all work\n", getpid());
++    exit(0);
++  }
++  
++  // Parent process: Monitor the children
++  printf("[Parent] PID %d: Created 3 children with different nice values\n", getpid());
++  printf("[Parent] High priority child: %d (nice -10)\n", pids[0]);
++  printf("[Parent] Normal priority child: %d (nice 0)\n", pids[1]);
++  printf("[Parent] Low priority child: %d (nice 10)\n", pids[2]);
++  printf("[Parent] Watch the scheduling order and progress rates!\n");
++  printf("[Parent] High priority process should finish first.\n");
++  printf("[Parent] Press Ctrl+Y to see process weights and vruntime values.\n\n");
++  
++  // Wait for all children to complete
++  for(int i = 0; i < 3; i++) {
++    wait(0);
++  }
++  
++  printf("\n=== Nice Test Completed ===\n");
++  printf("Expected behavior:\n");
++  printf("- High priority process (nice -10) should finish first\n");
++  printf("- Low priority process (nice 10) should finish last\n");
++  printf("- vruntime should progress slower for high priority processes\n");
++  printf("- Weight values should be: nice -10 = 9548, nice 0 = 1024, nice 10 = 110\n");
++  printf("- Time slices should be proportional to weights\n");
++  printf("- Press Ctrl+Y during execution to see process details\n");
++  
++  exit(0);
++}
+diff -ruN xv6-riscv/user/procdump_test.c xv6-riscv_1/user/procdump_test.c
+--- xv6-riscv/user/procdump_test.c	1970-01-01 05:30:00.000000000 +0530
++++ xv6-riscv_1/user/procdump_test.c	2025-09-10 23:25:36.476113854 +0530
+@@ -0,0 +1,34 @@
++#include "kernel/types.h"
++#include "kernel/stat.h"
++#include "user/user.h"
++
++// Test program to display process information
++int
++main(int argc, char *argv[])
++{
++  printf("=== Process Dump Test ===\n");
++  printf("This program demonstrates process information display\n");
++  printf("Press Ctrl+Y in xv6 to see live process dump\n");
++  printf("If Ctrl+Y doesn't work, this shows the expected format:\n\n");
++  
++  printf("Expected CFS Process Dump Format:\n");
++  printf("PID\tSTATE\tNAME\tVRUNTIME\tNICE\tWEIGHT\tTSLICE\n");
++  printf("1\tsleep\tinit\t0\t0\t1024\t20\n");
++  printf("2\trun\tsh\t150\t0\t1024\t20\n");
++  printf("3\trun\tprocdump_test\t75\t0\t1024\t20\n");
++  
++  printf("\nNote: Press Ctrl+Y in the xv6 terminal (not VS Code) to see real data\n");
++  
++  // Do some CPU work to show up in scheduler
++  for(int i = 0; i < 50000; i++) {
++    if(i % 10000 == 0) {
++      printf("Working... iteration %d (try Ctrl+Y now)\n", i);
++      pause(5); // Give time to press Ctrl+Y
++    }
++    int dummy = i * i % 1000;
++    (void)dummy;
++  }
++  
++  printf("Test completed. Remember: Ctrl+Y works in xv6 terminal, not VS Code!\n");
++  exit(0);
++}
+diff -ruN xv6-riscv/user/readcount.c xv6-riscv_1/user/readcount.c
+--- xv6-riscv/user/readcount.c	1970-01-01 05:30:00.000000000 +0530
++++ xv6-riscv_1/user/readcount.c	2025-09-10 22:52:27.093908729 +0530
+@@ -0,0 +1,56 @@
++#include "kernel/types.h"
++#include "kernel/stat.h"
++#include "user/user.h"
++#include "kernel/fcntl.h"
++
++int
++main(int argc, char *argv[])
++{
++  int fd;
++  char buf[100];
++  int initial_count, final_count;
++  
++  // Create a test file with some content
++  fd = open("testfile.txt", O_CREATE | O_WRONLY);
++  if (fd < 0) {
++    printf("Failed to create test file\n");
++    exit(1);
++  }
++  
++  // Write some data to the file
++  char *test_data = "This is a test file with exactly 100 bytes of data. We need to write enough text here to reach";
++  write(fd, test_data, 100);
++  close(fd);
++  
++  // Get initial read count
++  initial_count = getreadcount();
++  printf("Initial read count: %d\n", initial_count);
++  
++  // Open and read 100 bytes from the file
++  fd = open("testfile.txt", O_RDONLY);
++  if (fd < 0) {
++    printf("Failed to open test file for reading\n");
++    exit(1);
++  }
++  
++  int bytes_read = read(fd, buf, 100);
++  printf("Read %d bytes from file\n", bytes_read);
++  close(fd);
++  
++  // Get final read count
++  final_count = getreadcount();
++  printf("Final read count: %d\n", final_count);
++  printf("Increase in read count: %d\n", final_count - initial_count);
++  
++  // Verify the increase
++  if (final_count - initial_count == 100) {
++    printf("SUCCESS: Read count increased by exactly 100 bytes\n");
++  } else {
++    printf("ERROR: Expected increase of 100, got %d\n", final_count - initial_count);
++  }
++  
++  // Clean up
++  unlink("testfile.txt");
++  
++  exit(0);
++}
+diff -ruN xv6-riscv/user/schedtest.c xv6-riscv_1/user/schedtest.c
+--- xv6-riscv/user/schedtest.c	1970-01-01 05:30:00.000000000 +0530
++++ xv6-riscv_1/user/schedtest.c	2025-09-10 23:25:36.456145805 +0530
+@@ -0,0 +1,31 @@
++#include "kernel/types.h"
++#include "kernel/stat.h"
++#include "user/user.h"
++
++int
++main(int argc, char *argv[])
++{
++  printf("Starting scheduler test...\n");
++  printf("Use Ctrl+Y to see process information\n");
++  
++  // Fork multiple CPU-intensive processes
++  for(int i = 0; i < 3; i++) {
++    if(fork() == 0) {
++      // Child process - run CPU test
++      char id_str[10];
++      id_str[0] = '0' + i;
++      id_str[1] = '\0';
++      exec("cputest", (char*[]){"cputest", id_str, 0});
++      printf("exec failed\n");
++      exit(1);
++    }
++  }
++  
++  // Parent waits for all children
++  for(int i = 0; i < 3; i++) {
++    wait(0);
++  }
++  
++  printf("All test processes completed\n");
++  exit(0);
++}
+diff -ruN xv6-riscv/user/test_b1.c xv6-riscv_1/user/test_b1.c
+--- xv6-riscv/user/test_b1.c	1970-01-01 05:30:00.000000000 +0530
++++ xv6-riscv_1/user/test_b1.c	2025-09-11 22:32:38.752835702 +0530
+@@ -0,0 +1,33 @@
++#include "kernel/types.h"
++#include "kernel/stat.h"
++#include "user/user.h"
++
++// Test B.1: Priority Support with Nice Values
++int
++main(int argc, char *argv[])
++{
++  printf("=== Testing B.1: Priority Support (Nice Values) ===\n");
++  printf("This test verifies nice value weight calculations\n");
++  printf("Expected weights: Nice 0=1024, Nice -20=88761, Nice 19=15\n\n");
++  
++  printf("Press Ctrl+Y to see process weights in CFS mode\n");
++  printf("Look for WEIGHT column in process dump\n\n");
++  
++  // Create processes with different nice values (simulated)
++  // In real implementation, you'd set nice values via system call
++  int pid = getpid();
++  printf("Process PID %d: Default nice=0, expected weight=1024\n", pid);
++  
++  // Simulate CPU work to show up in scheduler
++  for(int i = 0; i < 100000; i++) {
++    if(i % 20000 == 0) {
++      printf("B.1 Test: CPU work iteration %d (PID: %d)\n", i, pid);
++    }
++    // Some computation
++    int dummy = i * i % 1000;
++    (void)dummy;
++  }
++  
++  printf("B.1 Test completed. Check process dump for weight=1024\n");
++  exit(0);
++}
+diff -ruN xv6-riscv/user/test_b2.c xv6-riscv_1/user/test_b2.c
+--- xv6-riscv/user/test_b2.c	1970-01-01 05:30:00.000000000 +0530
++++ xv6-riscv_1/user/test_b2.c	2025-09-11 22:32:38.752835702 +0530
+@@ -0,0 +1,35 @@
++#include "kernel/types.h"
++#include "kernel/stat.h"
++#include "user/user.h"
++
++// Test B.2: Virtual Runtime Tracking
++int
++main(int argc, char *argv[])
++{
++  printf("=== Testing B.2: Virtual Runtime Tracking ===\n");
++  printf("This test verifies vruntime updates during execution\n");
++  printf("Expected: vruntime should increase monotonically\n\n");
++  
++  printf("Press Ctrl+Y repeatedly to see vruntime changes\n");
++  printf("Look for VRUNTIME column in process dump\n\n");
++  
++  int pid = getpid();
++  printf("Process PID %d starting vruntime tracking test\n", pid);
++  
++  // Perform CPU-intensive work in phases
++  for(int phase = 1; phase <= 5; phase++) {
++    printf("B.2 Test Phase %d: Starting CPU burst\n", phase);
++    
++    // CPU intensive work
++    for(int i = 0; i < 50000; i++) {
++      int dummy = i * i * i % 1000;
++      (void)dummy;
++    }
++    
++    printf("B.2 Test Phase %d: Completed - check vruntime increase\n", phase);
++    pause(10); // Give time to observe vruntime
++  }
++  
++  printf("B.2 Test completed. Vruntime should have increased significantly\n");
++  exit(0);
++}
+diff -ruN xv6-riscv/user/test_b3.c xv6-riscv_1/user/test_b3.c
+--- xv6-riscv/user/test_b3.c	1970-01-01 05:30:00.000000000 +0530
++++ xv6-riscv_1/user/test_b3.c	2025-09-11 22:32:38.754036389 +0530
+@@ -0,0 +1,57 @@
++#include "kernel/types.h"
++#include "kernel/stat.h"
++#include "user/user.h"
++
++// Test B.3: CFS Scheduling Algorithm
++int
++main(int argc, char *argv[])
++{
++  printf("=== Testing B.3: CFS Scheduling Algorithm ===\n");
++  printf("This test verifies fair scheduling based on vruntime\n");
++  printf("Expected: Process with lowest vruntime gets scheduled next\n\n");
++  
++  int child_count = 3;
++  
++  printf("Creating %d child processes for fair scheduling test\n", child_count);
++  
++  for(int i = 0; i < child_count; i++) {
++    int pid = fork();
++    if(pid == 0) {
++      // Child process
++      int child_id = i + 1;
++      printf("Child %d (PID: %d) starting execution\n", child_id, getpid());
++      
++      // Each child does different amounts of work to create vruntime differences
++      int work_amount = (i + 1) * 30000;
++      
++      for(int j = 0; j < work_amount; j++) {
++        if(j % 10000 == 0) {
++          printf("Child %d: Work iteration %d, vruntime should be tracked\n", child_id, j);
++        }
++        int dummy = j * j % 1000;
++        (void)dummy;
++      }
++      
++      printf("Child %d completed work\n", child_id);
++      exit(0);
++    } else if(pid > 0) {
++      printf("Created child %d with PID: %d\n", i + 1, pid);
++    } else {
++      printf("Fork failed for child %d\n", i + 1);
++      exit(1);
++    }
++  }
++  
++  printf("\nB.3 Test: All children created. Observe scheduling fairness:\n");
++  printf("- Press Ctrl+Y to see process states and vruntimes\n");
++  printf("- Processes with lower vruntime should get more CPU time\n");
++  
++  // Wait for all children
++  for(int i = 0; i < child_count; i++) {
++    wait(0);
++    printf("Child %d completed\n", i + 1);
++  }
++  
++  printf("B.3 Test completed. Fair scheduling should have been observed\n");
++  exit(0);
++}
+diff -ruN xv6-riscv/user/test_b4.c xv6-riscv_1/user/test_b4.c
+--- xv6-riscv/user/test_b4.c	1970-01-01 05:30:00.000000000 +0530
++++ xv6-riscv_1/user/test_b4.c	2025-09-11 22:32:38.754036389 +0530
+@@ -0,0 +1,66 @@
++#include "kernel/types.h"
++#include "kernel/stat.h"
++#include "user/user.h"
++
++// Test B.4: Dynamic Time Slice Calculation
++int
++main(int argc, char *argv[])
++{
++  printf("=== Testing B.4: Dynamic Time Slice Calculation ===\n");
++  printf("This test verifies time slice computation based on weight and target latency\n");
++  printf("Expected: Higher weight processes get larger time slices\n\n");
++  
++  printf("Press Ctrl+Y to see TIME_SLICE column in process dump\n");
++  printf("Formula: time_slice = (target_latency * weight) / total_weight\n");
++  printf("Default target latency: 20 ticks\n\n");
++  
++  int pid = getpid();
++  printf("Process PID %d: Testing time slice calculation\n", pid);
++  printf("With default nice=0, weight=1024, expect time_slice around 20 ticks\n\n");
++  
++  // Create multiple processes to test time slice distribution
++  printf("Creating multiple processes to test time slice distribution...\n");
++  
++  for(int i = 0; i < 2; i++) {
++    int child_pid = fork();
++    if(child_pid == 0) {
++      // Child process
++      printf("Child %d (PID: %d) - Check time slice allocation\n", i + 1, getpid());
++      
++      // Do some work to trigger scheduling
++      for(int j = 0; j < 40000; j++) {
++        if(j % 15000 == 0) {
++          printf("Child %d: Working... time slice should be visible in dump\n", i + 1);
++        }
++        int dummy = j * (i + 1) % 1000;
++        (void)dummy;
++      }
++      
++      exit(0);
++    } else if(child_pid < 0) {
++      printf("Fork failed for child %d\n", i + 1);
++    }
++  }
++  
++  // Parent also does work
++  printf("Parent working... observe time slice distribution\n");
++  for(int i = 0; i < 30000; i++) {
++    if(i % 10000 == 0) {
++      printf("B.4 Test: Parent iteration %d - check time slices\n", i);
++    }
++    int dummy = i * i % 1000;
++    (void)dummy;
++  }
++  
++  // Wait for children
++  wait(0);
++  wait(0);
++  
++  printf("B.4 Test completed.\n");
++  printf("Verification:\n");
++  printf("1. Check that time_slice values appeared in process dump\n");
++  printf("2. Time slices should be proportional to process weights\n");
++  printf("3. Sum of all time slices should approximate target latency\n");
++  
++  exit(0);
++}
+diff -ruN xv6-riscv/user/user.h xv6-riscv_1/user/user.h
+--- xv6-riscv/user/user.h	2025-09-12 15:57:21.254105035 +0530
++++ xv6-riscv_1/user/user.h	2025-09-12 14:11:25.504679993 +0530
+@@ -24,6 +24,8 @@
+ char* sys_sbrk(int,int);
+ int pause(int);
+ int uptime(void);
++int getreadcount(void);
++int nice(int);
+ 
+ // ulib.c
+ int stat(const char*, struct stat*);
+diff -ruN xv6-riscv/user/usys.pl xv6-riscv_1/user/usys.pl
+--- xv6-riscv/user/usys.pl	2025-09-12 15:57:21.255542798 +0530
++++ xv6-riscv_1/user/usys.pl	2025-09-12 14:11:25.504679993 +0530
+@@ -42,3 +42,5 @@
+ entry("sbrk");
+ entry("pause");
+ entry("uptime");
++entry("getreadcount");
++entry("nice");
